@@ -1,0 +1,16 @@
+{
+  "name": "@nuxtjs/dynamic-i18n",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": "https://github.com/nuxt/modules",
+  "homepage": "https://github.com/nuxt/modules/tree/master/modules/dynamic-i18n",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "google-spreadsheet": "^2.0.4",
+    "lodash": "^4.17.5",
+    "vue-i18n": "^7.6.0"
+  }
+}
