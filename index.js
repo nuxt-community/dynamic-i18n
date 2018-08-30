@@ -8,7 +8,8 @@ const defaults = {
   fallbackLocale: 'en',
   outputFilePrefix: 'locale',
   maxAge: 1000 * 60 * 60,
-  localeNamespaceStore: 'i18n'
+  localeNamespaceStore: 'i18n',
+  staticFolder: 'i18n'
 }
 
 async function importI18n({ conf, log, error }) {
@@ -22,7 +23,7 @@ async function importI18n({ conf, log, error }) {
 
 module.exports = async function nuxtDynamicI18n(_moduleOptions) {
   // Set default translate path into static directory
-  defaults.path = path.join(this.nuxt.options.srcDir, this.nuxt.options.dir.static, 'i18n')
+  defaults.path = path.join(this.nuxt.options.srcDir, this.nuxt.options.dir.static, defaults.staticFolder)
   // Get options from module injection
   const conf = Object.assign(defaults, this.options.dynamicI18n, _moduleOptions)
 
@@ -33,7 +34,7 @@ module.exports = async function nuxtDynamicI18n(_moduleOptions) {
   }
 
   // Load translates from provider
-  const i18n = await importI18n(importOptions)
+  importI18n(importOptions)
 
   this.addPlugin({
     src: path.resolve(__dirname, 'plugin.js'),
