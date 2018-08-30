@@ -40,6 +40,7 @@ This module automatically import your translate file from a specific provider.
 | fallbackLocale | Optional | `'en'` | Default language if not founded from the store |
 | localeNamespaceStore | Optional | `'i18n'` | Default namespace of i18n locale store. see example of store [here](https://github.com/nuxt/nuxt.js/blob/dev/examples/i18n/store/index.js)|
 | outputFilePrefix | Optional | `'locale'` | Prefix of the output file like : {{outputFilePrefix}}-{{language}}.json. |
+| staticFolder | Optional | `static` | Specify folder in static
 
 ## 📑 License
 
