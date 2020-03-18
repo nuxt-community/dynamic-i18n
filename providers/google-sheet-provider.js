@@ -2,9 +2,9 @@ const _ = require('lodash')
 const fs = require('fs')
 const path = require('path')
 
-const GoogleSpreadsheet = require('google-spreadsheet')
-const KEYS = 'keys'
-const VARS = 'vars'
+const { GoogleSpreadsheet } = require('google-spreadsheet')
+const KEYS = 'KEYS'
+const VARS = 'VARS'
 
 function cb(fn, ...args) {
   return new Promise((resolve, reject) => {
@@ -40,8 +40,8 @@ async function extract({ rows, path, conf }) {
 
     if (keys.length > 0) {
       _.forEach(conf.languages, (language) => {
-        if (_.has(row, language.toLowerCase())) {
-          const value = row[language.toLowerCase()].replace(/  +/g, ' ')
+        if (_.has(row, language.toUpperCase())) {
+          const value = row[language.toUpperCase()].replace(/  +/g, ' ')
 
           assignValue(i18n, language, keys, variables, value)
         }
@@ -49,7 +49,7 @@ async function extract({ rows, path, conf }) {
     }
   })
 
-  if (!path) return Promise.resolve(i18n)
+  if (!path) return i18n
 
   return save(i18n, path, conf)
 }
@@ -64,13 +64,13 @@ async function save(i18n, directory, conf) {
     const jsonData = JSON.stringify(i18n[language], null, 4)
 
     try {
-      fs.writeFileSync(filePath, jsonData);
+      fs.writeFileSync(filePath, jsonData)
     } catch (err) {
-      Promise.reject(err)
+      return Promise.reject(err)
     }
   })
 
-  return Promise.resolve(i18n)
+  return i18n
 }
 
 function assignValue(i18n, language, keys, variables, value) {
@@ -87,16 +87,16 @@ function assignValue(i18n, language, keys, variables, value) {
 }
 
 function parseValue(value, variables) {
-  if (_.isEmpty(variables)) return value;
+  if (_.isEmpty(variables)) return value
 
-  var parsed = value;
+  var parsed = value
   _.each(variables, function (variable, index) {
     if (!_.isEmpty(variable)) {
-      parsed = parsed.replace(new RegExp('\\[' + (index + 1) + '\\]', 'g'), '{{' + variable + '}}');
+      parsed = parsed.replace(new RegExp('\\[' + (index + 1) + '\\]', 'g'), '{{' + variable + '}}')
     }
-  });
+  })
 
-  return parsed;
+  return parsed
 }
 
 function getObjectFromTree(object, tree) {
@@ -110,14 +110,16 @@ async function importI18n({ path, conf, log }) {
   if (!checkExportConfigurationFile(conf)) return Promise.reject('Bad configuration file')
 
   const doc = new GoogleSpreadsheet(conf['providerKey'])
-  await cb(doc.useServiceAccountAuth, conf.credentials)
-  const info = await cb(doc.getInfo)
 
-  const worksheetIndex = _.findIndex(info.worksheets, (worksheet) => worksheet.title === conf.title)
+  await doc.useServiceAccountAuth(conf.credentials)
+  await doc.loadInfo()
 
-  if (worksheetIndex === -1) return Promise.reject(`Unable to find ${conf.title} worksheet`)
+  // If no gid provided we load the first tab
+  const worksheet = conf.id ? doc.sheetsById[conf.id] : doc.sheetsByIndex[0]
 
-  const rows = await cb(info.worksheets[worksheetIndex].getRows)
+  if (!worksheet) return Promise.reject(`Unable to find ${conf.id} worksheet tab`)
+
+  const rows = await worksheet.getRows()
   const i18n = await extract({ rows, path, conf, log })
 
   log(`Extract: ${rows.length} rows`)
@@ -126,5 +128,5 @@ async function importI18n({ path, conf, log }) {
 }
 
 module.exports = {
-  importI18n: importI18n
-};
+  importI18n
+}

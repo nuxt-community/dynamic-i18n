@@ -2,7 +2,6 @@ const path = require('path')
 const library = require('./library')
 
 const defaults = {
-  title: 'Translate',
   provider: 'google-sheet',
   languages: ['en'],
   fallbackLocale: 'en',
@@ -34,7 +33,7 @@ module.exports = async function nuxtDynamicI18n(_moduleOptions) {
   }
 
   // Load translates from provider
-  importI18n(importOptions)
+  await importI18n(importOptions)
 
   this.addPlugin({
     src: path.resolve(__dirname, 'plugin.js'),
