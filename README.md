@@ -6,7 +6,7 @@
 
 This module automatically import your translate file from a specific provider.
 
-# RooadMap
+# RoadMap
 - Integrate [https://github.com/nuxt-community/nuxt-i18n](nuxt-i18n) plugin
 
 # Supported providers
