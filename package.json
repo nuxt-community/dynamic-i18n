@@ -11,6 +11,6 @@
   "dependencies": {
     "google-spreadsheet": "^3.0.10",
     "lodash": "^4.17.5",
-    "vue-i18n": "^7.6.0"
+    "vue-i18n": "^9.0.0"
   }
 }
