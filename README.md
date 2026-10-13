@@ -1,3 +1,6 @@
+> [!NOTE]
+> This repository is archived. `@nuxtjs/dynamic-i18n` was built for Nuxt 2, which reached end of life on June 30, 2024.
+
 # Dynamic I18n v2.0.0
 [![npm](https://img.shields.io/npm/dt/@nuxtjs/dynamic-i18n.svg?style=flat-square)](https://www.npmjs.com/package/@nuxtjs/dynamic-i18n)
 [![npm (scoped with tag)](https://img.shields.io/npm/v/@nuxtjs/dynamic-i18n/latest.svg?style=flat-square)](https://www.npmjs.com/package/@nuxtjs/dynamic-i18n)
